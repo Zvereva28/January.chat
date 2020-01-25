@@ -1,16 +1,15 @@
-package com.geekbrains.chat.client;
+package com.github.Zvereva28.January.chat.client;
+
+
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class Controller implements Initializable {
     @FXML
@@ -31,7 +30,7 @@ public class Controller implements Initializable {
                     while (true) {
                         String msg = network.readMsg();
                         if (!msg.equals("/end")){
-                        textArea.appendText(msg + "\n");}
+                            textArea.appendText(msg + "\n");}
                         else {
                             textArea.appendText("соединение будет закрыто");
                             network.close();

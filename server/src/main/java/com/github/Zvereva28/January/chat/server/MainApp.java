@@ -1,4 +1,4 @@
-package com.geekbrains.chart.server;
+package com.github.Zvereva28.January.chat.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class MainApp {
     public static void main(String[] args) {
-        try (ServerSocket serverSocket = new ServerSocket(8989)){
+        try (ServerSocket serverSocket = new ServerSocket(8989)) {
             System.out.println("Сервер запущен. Ожидаем подключения клиентов...");
             Socket socket = serverSocket.accept();
             System.out.println("Клиент подключился");
@@ -17,8 +17,8 @@ public class MainApp {
             while (true) {
                 String msg = in.readUTF();
                 if (!msg.equals("/end")){
-                System.out.print("Сообщение от клиента: " + msg + "\n");
-                out.writeUTF("echo: " + msg);}
+                    System.out.print("Сообщение от клиента: " + msg + "\n");
+                    out.writeUTF("echo: " + msg);}
                 else {
                     out.writeUTF(msg);
                     break;
