@@ -1,4 +1,4 @@
-package com.geekbrains.chat.client;
+package com.github.Zvereva28.January.chat.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +13,6 @@ public class Main extends Application {
         primaryStage.setTitle("January Chat Client");
         primaryStage.setScene(new Scene(root, 400, 500));
         primaryStage.show();
-
-
     }
 
     public static void main(String[] args) {

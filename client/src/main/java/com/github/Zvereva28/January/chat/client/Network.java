@@ -1,4 +1,5 @@
-package com.geekbrains.chat.client;
+package com.github.Zvereva28.January.chat.client;
+
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
