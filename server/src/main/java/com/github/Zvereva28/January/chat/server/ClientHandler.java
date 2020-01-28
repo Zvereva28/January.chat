@@ -37,13 +37,24 @@ public class ClientHandler {
                             nickname = nickFromAuthManager;
                             server.subscribe(this);
                             sendMsg("/authok " + nickname);
-                            server.broadcastMsg(nickname + " Вошел в чат" );
                             break;
                         } else {
                             sendMsg("Указан неверный логин/пароль");
                         }
                     }
                 }
+                while (true) { // цикл проверки персональных сообщений
+                    String msg = in.readUTF();
+                    System.out.print("Сообщение от клиента: " + msg + "\n");
+                    if (msg.startsWith("/w ")) { // /auth login1 pass1
+                        String[] nick = msg.split(" ",  3);
+                        server.wispMsg(this, nick[1], nick[2]);
+                        break;
+                        } else {
+                            break;
+                        }
+                }
+
                 while (true) { // цикл общения с сервером (обмен текстовыми сообщениями и командами)
                     String msg = in.readUTF();
                     System.out.print("Сообщение от клиента: " + msg + "\n");
@@ -51,6 +62,16 @@ public class ClientHandler {
                         if (msg.equals("/end")) {
                             sendMsg("/end_confirm");
                             break;
+                        }
+                        if (msg.startsWith("/w")){
+                            String [] tokens = msg.split(" ", 3);
+                            server.wispMsg(this, tokens[1], tokens[2]);
+                            continue;
+                        }
+                        if (msg.startsWith("/change_nick")){
+                            nickname = msg.split(" ")[1];
+                            sendMsg(nickname + " Ваш новый ник"+"\n");
+
                         }
                     } else {
                         server.broadcastMsg(nickname + ": " + msg);
@@ -64,7 +85,7 @@ public class ClientHandler {
         }).start();
     }
 
-    public void sendMsg(String msg) {
+    public void sendMsg(String msg) { // адресная рассылка сообщений
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
@@ -74,7 +95,6 @@ public class ClientHandler {
 
     public void close() {
         server.unsubscribe(this);
-        server.broadcastMsg(nickname + " вышел из чата");
         nickname = null;
         if (in != null) {
             try {

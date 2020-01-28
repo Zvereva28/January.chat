@@ -29,13 +29,21 @@ public class Server {
         }
     }
 
-    public void broadcastMsg(String msg) {
+    public void broadcastMsg(String msg) { // рассылка сообщений всем "клиентам чата"
         for (ClientHandler o : clients) {
             o.sendMsg(msg);
         }
     }
+    public void wispMsg(ClientHandler senderClient, String nick, String msg) { // приват сообщение
+        for (ClientHandler o : clients) {
+            if (o.getNickname().equals(nick)) {
+                o.sendMsg("персональное сообщение от  " + senderClient.getNickname() + msg);
+            }
+        }
+        senderClient.sendMsg( "пользователя нет в сети");
+    }
 
-    public boolean isNickBusy(String nickname) {
+    public boolean isNickBusy(String nickname) { // проверка занят ли никнэйм
         for (ClientHandler o : clients) {
             if (o.getNickname().equals(nickname)) {
                 return true;
@@ -44,11 +52,13 @@ public class Server {
         return false;
     }
 
-    public synchronized void subscribe(ClientHandler clientHandler) {
+    public synchronized void subscribe(ClientHandler clientHandler) { //добавление клиента в список пользователей чата
+        broadcastMsg(clientHandler.getNickname() + " вошел в чат /n");
         clients.add(clientHandler);
     }
 
-    public synchronized void unsubscribe(ClientHandler clientHandler) {
+    public synchronized void unsubscribe(ClientHandler clientHandler) { //удаление клиента из списка пользователей в сети
+        broadcastMsg(clientHandler.getNickname() + " вышел из чата /n");
         clients.remove(clientHandler);
     }
 
